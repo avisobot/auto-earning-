@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviso Auto Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Tiro+Bangla&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --red:#e63946;--dark:#0d0d0d;--card:#141414;--border:#2a2a2a;
+    --gold:#f4a03a;--green:#00c896;--text:#e0e0e0;--muted:#666;
+  }
+  body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;}
+  .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 60% 40% at 20% 20%,rgba(230,57,70,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 80% 80%,rgba(0,200,150,0.05) 0%,transparent 60%);}
+  .grid-bg{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:40px 40px;}
+  .wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:24px 16px 40px;}
+
+  /* HEADER */
+  .header{text-align:center;padding:32px 0 24px;}
+  .logo-box{width:72px;height:72px;background:var(--red);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 40px rgba(230,57,70,0.4);font-size:36px;animation:pulse 3s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 30px rgba(230,57,70,0.4);}50%{box-shadow:0 0 60px rgba(230,57,70,0.7);}}
+  .bot-name{font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;}
+  .bot-tagline{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green);letter-spacing:2px;margin-top:4px;}
+
+  /* DIVIDER */
+  .divider{display:flex;align-items:center;gap:12px;margin:24px 0;}
+  .divider-line{flex:1;height:1px;background:var(--border);}
+  .divider-text{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;}
+
+  /* ABOUT */
+  .about-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px;}
+  .about-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
+  .about-text{font-family:'Tiro Bangla',serif;font-size:14px;line-height:1.8;color:#aaa;}
+  .feature-list{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+  .feature-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);}
+  .feature-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;}
+
+  /* PLANS */
+  .pricing-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;text-align:center;}
+  .plans{display:flex;flex-direction:column;gap:12px;}
+  .plan{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;cursor:pointer;transition:all 0.3s;}
+  .plan:hover{border-color:rgba(230,57,70,0.5);transform:translateX(4px);}
+  .plan.selected{border-color:var(--green);background:rgba(0,200,150,0.06);box-shadow:0 0 20px rgba(0,200,150,0.1);}
+  .plan.popular::before{content:'POPULAR';position:absolute;top:0;right:0;background:var(--red);font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 10px;border-bottom-left-radius:8px;}
+  .plan.lifetime::before{content:'BEST VALUE';position:absolute;top:0;right:0;background:var(--gold);color:#000;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 10px;border-bottom-left-radius:8px;}
+  .plan-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);margin-right:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.3s;}
+  .plan.selected .plan-check{background:var(--green);border-color:var(--green);}
+  .plan-check::after{content:'✓';font-size:11px;color:#000;display:none;}
+  .plan.selected .plan-check::after{display:block;}
+  .plan-left{display:flex;align-items:center;flex:1;}
+  .plan-info{}
+  .plan-duration{font-size:17px;font-weight:700;color:#fff;letter-spacing:1px;}
+  .plan-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
+  .plan-right{text-align:right;}
+  .old-price{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px;}
+  .new-price{font-size:20px;font-weight:700;color:var(--green);letter-spacing:1px;}
+  .plan.lifetime .new-price{color:var(--gold);}
+  .currency{font-size:12px;opacity:0.7;}
+
+  /* ORDER FORM */
+  .order-section{margin-top:20px;display:none;}
+  .order-section.show{display:block;}
+  .order-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;}
+  .order-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:16px;}
+
+  /* SELECTED PACKAGE BADGE */
+  .selected-pkg{background:rgba(0,200,150,0.08);border:1px solid rgba(0,200,150,0.3);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
+  .selected-pkg-name{font-size:14px;font-weight:700;color:#fff;}
+  .selected-pkg-price{font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--green);font-weight:700;}
+
+  /* PAYMENT INFO */
+  .payment-box{background:rgba(244,160,58,0.06);border:1px solid rgba(244,160,58,0.25);border-radius:10px;padding:14px;margin-bottom:16px;}
+  .payment-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  .payment-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .payment-label{font-size:12px;color:#aaa;}
+  .payment-number{font-family:'Share Tech Mono',monospace;font-size:14px;color:#fff;font-weight:700;cursor:pointer;}
+  .copy-btn{background:rgba(244,160,58,0.15);border:1px solid rgba(244,160,58,0.3);color:var(--gold);font-size:10px;padding:3px 8px;border-radius:5px;cursor:pointer;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+  .copy-btn:hover{background:rgba(244,160,58,0.3);}
+  .payment-amount{font-family:'Share Tech Mono',monospace;font-size:20px;color:var(--gold);font-weight:700;text-align:center;margin-top:8px;padding-top:8px;border-top:1px solid rgba(244,160,58,0.2);}
+
+  /* FORM FIELDS */
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .field input,.field textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;outline:none;transition:border-color 0.3s;}
+  .field input:focus,.field textarea:focus{border-color:rgba(0,200,150,0.4);}
+  .field textarea{resize:none;height:80px;}
+
+  /* FILE UPLOAD */
+  .file-upload{width:100%;background:rgba(255,255,255,0.03);border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.3s;position:relative;}
+  .file-upload:hover,.file-upload.dragover{border-color:rgba(0,200,150,0.4);background:rgba(0,200,150,0.04);}
+  .file-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .file-upload-icon{font-size:28px;margin-bottom:8px;}
+  .file-upload-text{font-size:13px;color:#aaa;}
+  .file-upload-text b{color:var(--green);}
+  .file-preview{margin-top:10px;display:none;}
+  .file-preview img{max-width:100%;border-radius:8px;border:1px solid var(--border);}
+
+  /* SUBMIT BTN */
+  .submit-btn{width:100%;background:var(--green);border:none;border-radius:10px;padding:14px;color:#000;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;margin-top:6px;}
+  .submit-btn:hover{background:#00e6a8;box-shadow:0 0 20px rgba(0,200,150,0.3);}
+  .submit-btn:disabled{background:#333;color:#666;cursor:not-allowed;box-shadow:none;}
+
+  /* SUCCESS */
+  .success-box{display:none;background:rgba(0,200,150,0.08);border:1px solid rgba(0,200,150,0.3);border-radius:14px;padding:24px;text-align:center;margin-top:16px;}
+  .success-box.show{display:block;}
+  .success-icon{font-size:48px;margin-bottom:12px;}
+  .success-title{font-size:20px;font-weight:700;color:var(--green);letter-spacing:2px;margin-bottom:8px;}
+  .success-text{font-family:'Tiro Bangla',serif;font-size:14px;color:#aaa;line-height:1.8;}
+
+  /* VIDEO */
+  .video-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-top:20px;}
+  .video-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
+  .video-wrap{position:relative;width:100%;padding-bottom:56.25%;border-radius:10px;overflow:hidden;background:#000;}
+  .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+
+  /* CONTACT */
+  .contact-box{margin-top:20px;background:rgba(0,200,150,0.05);border:1px solid rgba(0,200,150,0.2);border-radius:14px;padding:16px;text-align:center;}
+  .contact-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:8px;}
+  .contact-value{font-size:16px;font-weight:700;color:#fff;}
+  .contact-sub{font-family:'Tiro Bangla',serif;font-size:12px;color:#aaa;margin-top:6px;}
+
+  /* FOOTER */
+  .footer{text-align:center;margin-top:28px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;}
+  .footer span{color:var(--red);}
+
+  /* REFERRAL PLAN */
+  .plan.referral-plan{border-color:rgba(62,198,245,0.4);position:relative;}
+  .plan.referral-plan::before{content:'REFERRAL OFFER';position:absolute;top:0;right:0;background:linear-gradient(135deg,#1a6fa8,#3ec6f5);color:#fff;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 10px;border-bottom-left-radius:8px;}
+  .plan.referral-plan:hover{border-color:rgba(62,198,245,0.7);}
+  .plan.referral-plan.selected{border-color:#3ec6f5;background:rgba(62,198,245,0.06);box-shadow:0 0 20px rgba(62,198,245,0.15);}
+  /* REFERRAL WARNING */
+  .referral-warning{background:rgba(180,20,20,0.12);border:1px solid rgba(230,57,70,0.45);border-radius:14px;padding:16px 18px;margin-bottom:4px;}
+  .rw-title{font-size:15px;font-weight:700;color:#e63946;margin-bottom:10px;font-family:'Tiro Bangla',serif;}
+  .rw-body p{font-family:'Tiro Bangla',serif;font-size:13px;color:#ccc;line-height:1.8;margin-bottom:10px;}
+  .rw-body ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .rw-body li{font-family:'Tiro Bangla',serif;font-size:13px;color:#ccc;line-height:1.8;}
+  .rw-icon{margin-right:6px;}
+
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#000;font-family:'Share Tech Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;font-weight:700;opacity:0;transition:opacity 0.3s;z-index:9999;pointer-events:none;}
+  .toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="grid-bg"></div>
+<div class="toast" id="toast">Copied!</div>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-box" style="background:transparent;box-shadow:none;padding:0;"><img src="data:image/png;base64,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" style="width:72px;height:72px;border-radius:20px;"></div>
+    <div class="bot-name">Aviso Auto Bot</div>
+    <div class="bot-tagline">// AUTOMATED VIDEO WATCHING BOT //</div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">বট সম্পর্কে</div><div class="divider-line"></div></div>
+  <div class="about-card">
+    <div class="about-title">▸ Aviso Auto Bot কী?</div>
+    <div class="about-text">Aviso Auto Bot একটি স্বয়ংক্রিয় ভিডিও দেখার বট যা Aviso.bz সাইটে আপনার হয়ে স্বয়ংক্রিয়ভাবে কাজ করে এবং আপনার আয় বাড়িয়ে দেয়।</div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-dot"></div>সম্পূর্ণ স্বয়ংক্রিয় ভিডিও দেখা</div>
+      <div class="feature-item"><div class="feature-dot"></div>YouTube ভিডিও auto-skip সাপোর্ট</div>
+      <div class="feature-item"><div class="feature-dot"></div>Background এ চলে, ফোন ব্যবহার করা যাবে</div>
+      <div class="feature-item"><div class="feature-dot"></div>Chrome browser extension হিসেবে কাজ করে</div>
+      <div class="feature-item"><div class="feature-dot"></div>সহজ ON/OFF toggle দিয়ে নিয়ন্ত্রণ</div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">প্যাকেজ সিলেক্ট করুন</div><div class="divider-line"></div></div>
+  <div class="pricing-title">⚡ একটি প্যাকেজ বেছে নিন</div>
+
+  <div class="plans">
+    <!-- REFERRAL PLAN -->
+    <div class="plan referral-plan" onclick="selectPlan(this)" data-name="৭ দিন – রেফারেল অফার" data-price="১" data-days="7">
+      <div class="plan-left"><div class="plan-check"></div><div class="plan-info"><div class="plan-duration">৭ দিন <span style="color:#3ec6f5;font-size:14px;">– রেফারেল অফার</span></div><div class="plan-sub">7 DAYS · REFERRAL USERS ONLY</div></div></div>
+      <div class="plan-right"><div class="old-price">৩৫ টাকা</div><div class="new-price" style="color:#3ec6f5;">১ <span class="currency">৳</span></div></div>
+    </div>
+
+    <!-- REFERRAL WARNING (shown when referral plan is selected) -->
+    <div class="referral-warning" id="referralWarning" style="display:none;">
+      <div class="rw-title">⚠️ গুরুত্বপূর্ণ সতর্কবার্তা</div>
+      <div class="rw-body">
+        <p>এই অফারটি শুধুমাত্র তাদের জন্য যারা <strong>আমার রেফারেল লিংক</strong> ব্যবহার করে Aviso.bz-তে নতুন একাউন্ট খুলেছেন।</p>
+        <ul>
+          <li><span class="rw-icon">🚫</span><strong>একাধিক একাউন্ট খুলবেন না!</strong> Aviso সাইটের নীতি অনুযায়ী একজন ব্যক্তি শুধুমাত্র একটি একাউন্ট রাখতে পারবেন।</li>
+          <li><span class="rw-icon">🔴</span>Bot নেওয়ার লোভে একাধিক একাউন্ট খুললে <strong style="color:#e63946;">আপনার সকল একাউন্ট Aviso কর্তৃক Permanently Block হয়ে যাবে।</strong></li>
+          <li><span class="rw-icon">✅</span>রেফারেল লিংক দিয়ে শুধুমাত্র একটি নতুন একাউন্ট তৈরি করুন এবং নিরাপদে থাকুন।</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="plan" onclick="selectPlan(this)" data-name="১৫ দিন" data-price="৩৫" data-days="15">
+      <div class="plan-left"><div class="plan-check"></div><div class="plan-info"><div class="plan-duration">১৫ দিন</div><div class="plan-sub">15 DAYS ACCESS</div></div></div>
+      <div class="plan-right"><div class="old-price">৮০ টাকা</div><div class="new-price">৩৫ <span class="currency">৳</span></div></div>
+    </div>
+    <div class="plan popular" onclick="selectPlan(this)" data-name="১ মাস" data-price="৫৫" data-days="30">
+      <div class="plan-left"><div class="plan-check"></div><div class="plan-info"><div class="plan-duration">১ মাস</div><div class="plan-sub">30 DAYS ACCESS</div></div></div>
+      <div class="plan-right"><div class="old-price">১৫০ টাকা</div><div class="new-price">৫৫ <span class="currency">৳</span></div></div>
+    </div>
+    <div class="plan" onclick="selectPlan(this)" data-name="৩ মাস" data-price="১৩০" data-days="90">
+      <div class="plan-left"><div class="plan-check"></div><div class="plan-info"><div class="plan-duration">৩ মাস</div><div class="plan-sub">90 DAYS ACCESS</div></div></div>
+      <div class="plan-right"><div class="old-price">৩৫০ টাকা</div><div class="new-price">১৩০ <span class="currency">৳</span></div></div>
+    </div>
+    <div class="plan lifetime" onclick="selectPlan(this)" data-name="Lifetime" data-price="৩৯৯" data-days="lifetime">
+      <div class="plan-left"><div class="plan-check"></div><div class="plan-info"><div class="plan-duration">Lifetime</div><div class="plan-sub">UNLIMITED ACCESS</div></div></div>
+      <div class="plan-right"><div class="old-price">৯৯৯ টাকা</div><div class="new-price">৩৯৯ <span class="currency">৳</span></div></div>
+    </div>
+  </div>
+
+  <!-- ORDER FORM -->
+  <div class="order-section" id="orderSection">
+    <div class="order-card">
+      <div class="order-title">▸ অর্ডার করুন</div>
+
+      <!-- Selected Package -->
+      <div class="selected-pkg">
+        <div><div style="font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;">Selected Package</div><div class="selected-pkg-name" id="selectedName">-</div></div>
+        <div class="selected-pkg-price" id="selectedPrice">-</div>
+      </div>
+
+      <!-- Referral note -->
+      <div id="referralOrderNote" style="display:none;background:rgba(62,198,245,0.08);border:1px solid rgba(62,198,245,0.3);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-family:'Tiro Bangla',serif;font-size:13px;color:#aaa;line-height:1.9;">
+        আপনি রেফারেল অফার বেছে নিয়েছেন। নিচে আপনার Aviso রেফারেল লিংক অর্ডার নোটে উল্লেখ করুন যাতে আমরা যাচাই করতে পারি।
+      </div>
+
+      <!-- Payment Info -->
+      <div class="payment-box">
+        <div class="payment-title">💳 পেমেন্ট করুন</div>
+        <div class="payment-row">
+          <span class="payment-label">bKash / Nagad</span>
+          <span class="payment-number" id="paymentNum">01618042229</span>
+          <button class="copy-btn" onclick="copyNum('paymentNum')">COPY</button>
+        </div>
+        <div class="payment-amount">সেন্ড মানি: <span id="payAmount">-</span> টাকা</div>
+      </div>
+
+      <!-- Form -->
+      <form id="orderForm">
+        <input type="hidden" name="package" id="hiddenPackage">
+        <input type="hidden" name="amount" id="hiddenAmount">
+
+        <div class="field">
+          <label>আপনার নাম *</label>
+          <input type="text" name="name" placeholder="আপনার নাম লিখুন" required minlength="2">
+        </div>
+        <div class="field">
+          <label>Gmail Address *</label>
+          <input type="email" name="email" placeholder="example@gmail.com" required>
+        </div>
+        <div class="field">
+          <label>WhatsApp Number <span style="color:var(--muted);font-size:10px;">(Optional)</span></label>
+          <input type="text" name="whatsapp" placeholder="01XXXXXXXXX">
+        </div>
+
+        <div class="field">
+          <label>আপনার Aviso একাউন্টের Username বা Profile Link *</label>
+          <input type="text" name="aviso_username" id="avisoUsernameField" placeholder="Aviso username বা profile link দিন" required>
+        </div>
+
+        <div class="field">
+          <label>যে নম্বর থেকে টাকা পাঠিয়েছেন *</label>
+          <input type="text" name="sender_number" placeholder="01XXXXXXXXX" required pattern="01[0-9]{9}" title="সঠিক ১১ ডিজিটের নম্বর দিন">
+        </div>
+
+        <div class="field">
+          <label>Transaction ID *</label>
+          <input type="text" name="transaction_id" placeholder="bKash/Nagad Transaction ID" required minlength="6" style="font-family:'Share Tech Mono',monospace;letter-spacing:1px;">
+        </div>
+
+        <div class="field" style="margin-top:18px;">
+          <label>যে মাধ্যমে পেমেন্ট করেছেন, সেটি নির্বাচন করুন</label>
+          <div style="display:flex;gap:10px;margin-top:10px;">
+            <label style="flex:1;cursor:pointer;">
+              <input type="radio" name="payment_method" value="bKash" required style="display:none;" onchange="selectPayMethod(this)">
+              <div class="pay-method-btn" id="btn_bkash" style="background:rgba(255,255,255,0.03);border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center;transition:all 0.3s;">
+                <img src="data:image/png;base64,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" style="width:40px;height:40px;border-radius:8px;">
+                <div style="font-size:13px;font-weight:700;color:#fff;margin-top:6px;">bKash</div>
+              </div>
+            </label>
+            <label style="flex:1;cursor:pointer;">
+              <input type="radio" name="payment_method" value="Nagad" required style="display:none;" onchange="selectPayMethod(this)">
+              <div class="pay-method-btn" id="btn_nagad" style="background:rgba(255,255,255,0.03);border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center;transition:all 0.3s;">
+                <img src="data:image/png;base64,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" style="width:40px;height:40px;border-radius:8px;">
+                <div style="font-size:13px;font-weight:700;color:#fff;margin-top:6px;">Nagad</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+                <button type="button" class="submit-btn" id="submitBtn" onclick="validateAndSubmit()">অর্ডার সাবমিট করুন ➜</button>
+      </form>
+
+      
+    </div>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">Setup Guide</div><div class="divider-line"></div></div>
+  <div class="video-card">
+    <div class="video-title">▸ কীভাবে Bot Setup করবেন?</div>
+    <div class="video-wrap">
+      <!-- আপনার YouTube video ID এখানে বসান -->
+      <iframe src="https://www.youtube.com/embed/-fXRWl1X3zM" allowfullscreen></iframe>
+    </div>
+    <a href="https://swiftexchangebd.github.io/exchange/" target="_blank" style="display:block;margin-top:14px;background:#0d1f1f;border:1px solid rgba(0,200,150,0.3);border-radius:12px;padding:16px;text-align:center;text-decoration:none;box-shadow:0 0 20px rgba(0,200,150,0.15);">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:8px;">// CRYPTO EXCHANGE //</div>
+      <div style="font-family:'Tiro Bangla',serif;font-size:13px;color:#bbb;line-height:1.9;margin-bottom:14px;">
+        ছোট পরিমাণেও এক্সচেঞ্জ করুন — মাত্র <b style="color:#fff;">$0.20 LTC</b> অথবা <b style="color:#fff;">$0.50 USDT</b> দিয়েই শুরু করা সম্ভব। সরাসরি বিকাশ বা নগদে টাকা পাবেন।
+      </div>
+      <div style="border-top:1px solid rgba(0,200,150,0.2);padding-top:14px;">
+        <div style="font-family:'Poppins',sans-serif;font-size:15px;font-weight:800;color:#ffffff;margin-bottom:10px;">💲 DOLLAR SELL করুন →</div>
+        <img src="https://i.postimg.cc/8CznPvy4/20260328-130916-(1).png" style="height:30px;object-fit:contain;">
+      </div>
+    </a>
+  </div>
+  <div class="contact-box">
+    <div class="contact-label">// সমস্যা হলে যোগাযোগ করুন //</div>
+    <div class="contact-value">📱 WhatsApp: 01842739124</div>
+    <div class="contact-sub">সকাল ৯টা - রাত ১০টা</div>
+  </div>
+
+  <div class="footer">AVISO <span>///</span> AUTO BOT &nbsp;|&nbsp; ALL RIGHTS RESERVED</div>
+</div>
+
+<script>
+  function selectPayMethod(el){
+    document.getElementById('btn_bkash').style.borderColor='var(--border)';
+    document.getElementById('btn_bkash').style.background='rgba(255,255,255,0.03)';
+    document.getElementById('btn_nagad').style.borderColor='var(--border)';
+    document.getElementById('btn_nagad').style.background='rgba(255,255,255,0.03)';
+    var btnId = el.value==='bKash' ? 'btn_bkash' : 'btn_nagad';
+    document.getElementById(btnId).style.borderColor='var(--green)';
+    document.getElementById(btnId).style.background='rgba(0,200,150,0.08)';
+  }
+
+  var selectedPlan=null;
+
+  function selectPlan(el){
+    document.querySelectorAll('.plan').forEach(p=>p.classList.remove('selected'));
+    el.classList.add('selected');
+    // Show referral warning only for referral plan
+    var rw=document.getElementById('referralWarning');
+    var ron=document.getElementById('referralOrderNote');
+    if(el.classList.contains('referral-plan')){rw.style.display='block';ron.style.display='block';}else{rw.style.display='none';ron.style.display='none';}
+    selectedPlan={
+      name: el.dataset.name,
+      price: el.dataset.price,
+      days: el.dataset.days
+    };
+    document.getElementById('selectedName').textContent=selectedPlan.name;
+    document.getElementById('selectedPrice').textContent=selectedPlan.price+' ৳';
+    document.getElementById('payAmount').textContent=selectedPlan.price;
+    document.getElementById('hiddenPackage').value=selectedPlan.name;
+    document.getElementById('hiddenAmount').value=selectedPlan.price+' টাকা';
+    var sec=document.getElementById('orderSection');
+    sec.classList.add('show');
+    setTimeout(function(){sec.scrollIntoView({behavior:'smooth',block:'start'});},100);
+  }
+
+  function copyNum(id){
+    var txt=document.getElementById(id).textContent;
+    navigator.clipboard.writeText(txt).then(function(){
+      showToast('Copied: '+txt);
+    });
+  }
+
+  function showToast(msg){
+    var t=document.getElementById('toast');
+    t.textContent=msg;
+    t.classList.add('show');
+    setTimeout(function(){t.classList.remove('show');},2000);
+  }
+
+  function previewImage(input){
+    if(input.files && input.files[0]){
+      var reader=new FileReader();
+      reader.onload=function(e){
+        document.getElementById('previewImg').src=e.target.result;
+        document.getElementById('filePreview').style.display='block';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function validateAndSubmit(){
+    var form=document.getElementById('orderForm');
+    
+    if(!selectedPlan){
+      alert('⚠ প্রথমে একটি প্যাকেজ সিলেক্ট করুন!');
+      document.querySelector('.plans').scrollIntoView({behavior:'smooth'});
+      return;
+    }
+
+    var name=form.querySelector('[name="name"]').value.trim();
+    var email=form.querySelector('[name="email"]').value.trim();
+    var payMethod=form.querySelector('[name="payment_method"]:checked');
+    var sender=form.querySelector('[name="sender_number"]').value.trim();
+    var txn=form.querySelector('[name="transaction_id"]').value.trim();
+
+    if(!name || name.length<2){alert('⚠ আপনার নাম সঠিকভাবে লিখুন');return;}
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert('⚠ সঠিক Gmail address দিন');return;}
+    if(!payMethod){
+      document.getElementById('payMethodError').style.display='block';
+      alert('⚠ পেমেন্ট মাধ্যম নির্বাচন করুন');
+      return;
+    }
+    if(!sender || !/^01[0-9]{9}$/.test(sender)){alert('⚠ সঠিক ১১ ডিজিটের নম্বর দিন (যেমন: 01XXXXXXXXX)');return;}
+    if(!txn || txn.length<6){alert('⚠ সঠিক Transaction ID দিন (কমপক্ষে ৬ অক্ষর)');return;}
+
+    var btn=document.getElementById('submitBtn');
+    btn.disabled=true;
+    btn.textContent='পাঠানো হচ্ছে...';
+
+    var formData=new FormData(form);
+    fetch('https://formspree.io/f/xeelppzo',{
+      method:'POST',
+      body:formData,
+      headers:{'Accept':'application/json'}
+    }).then(function(r){
+      if(r.ok){
+       form.style.display='none';
+        document.getElementById('successPopup').style.display='flex'; 
+        
+      } else {
+        btn.disabled=false;
+        btn.textContent='অর্ডার সাবমিট করুন ➜';
+        alert('সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+      }
+    }).catch(function(){
+      btn.disabled=false;
+      btn.textContent='অর্ডার সাবমিট করুন ➜';
+      alert('Internet সংযোগ চেক করুন।');
+    });
+  }
+</script>
+<!-- SUCCESS POPUP -->
+<div id="successPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:99999;justify-content:center;align-items:center;padding:20px;">
+  <div style="background:#0d1f1f;border:1px solid rgba(0,200,150,0.35);border-radius:22px;padding:32px 24px;max-width:370px;width:100%;text-align:center;box-shadow:0 0 50px rgba(0,200,150,0.18);animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);">
+    <style>@keyframes popIn{0%{transform:scale(0.7);opacity:0;}100%{transform:scale(1);opacity:1;}}</style>
+   <img src="https://s13.gifyu.com/images/bv0Yl.gif" style="width:110px;height:110px;margin-bottom:16px;">
+    <div style="color:#00c896;font-size:24px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;margin-bottom:14px;">অর্ডার সম্পন্ন!</div>
+    <p style="font-family:'Tiro Bangla',serif;font-size:13px;color:#aaa;line-height:2;text-align:left;">
+      আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে। যাচাই প্রক্রিয়া সম্পন্ন হওয়ার পর আপনার Gmail-এ Bot ফাইলটি পাঠিয়ে দেওয়া হবে। সাধারণত ১–৩ ঘণ্টার মধ্যে ডেলিভারি সম্পন্ন হয়।<br><br>
+      আপনি <b style="color:#fff;">LimeWire</b> থেকে একটি ইমেইল পাবেন, যদি না পান তবে Gmail <b style="color:#fff;">spam box</b> check করুন। যেখানে লেখা থাকবে: <b style="color:#f4a03a;">"📬 You've got files!"</b> — ইমেইলটিতে ক্লিক করে <b style="color:#00c896;">Avisobot.zip</b> ফাইলটি ডাউনলোড করে নিন।
+    </p>
+    <button onclick="document.getElementById('successPopup').style.display='none'" style="margin-top:22px;background:#00c896;border:none;padding:13px 40px;border-radius:10px;color:#000;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;cursor:pointer;">ঠিক আছে ✓</button>
+  </div>
+</div>
+</body>
+</html>
