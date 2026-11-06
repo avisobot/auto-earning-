@@ -109,7 +109,7 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
 .plan-duration{font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:17px;font-weight:800;color:#fff;letter-spacing:0.5px;}
 .plan-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
 .plan-right{text-align:right;flex-shrink:0;}
-.old-price{font-family:'Share Tech Mono','Hind Siliguri','Noto Sans Bengali',monospace;font-size:11px;font-weight:800;color:var(--muted-2);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px;}
+.old-price{font-family:'Share Tech Mono','Hind Siliguri','Noto Sans Bengali',monospace;font-size:11px;font-weight:800;color:var(--muted-2);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:1px;}
 .new-price{font-family:'Poppins','Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:20px;font-weight:800;color:var(--blue-2);letter-spacing:0.5px;}
 .currency{font-size:12px;opacity:0.7;}
 .plan-cta{flex:1 1 100%;margin-top:14px;text-align:center;padding:10px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.5px;color:#cfd3da;transition:all 0.3s;}
@@ -128,8 +128,8 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
 .device-section{margin-top:22px;display:none;}
 .device-section.visible{display:block;}
 .device-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
-.device-grid{display:flex;gap:8px;flex-wrap:wrap;}
-.device-btn{background:var(--card);backdrop-filter:blur(16px);border:2px solid var(--border);border-radius:14px;padding:10px 12px;cursor:pointer;transition:all 0.3s;text-align:center;min-width:58px;}
+.device-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+.device-btn{background:var(--card);backdrop-filter:blur(16px);border:2px solid var(--border);border-radius:14px;padding:10px 4px;cursor:pointer;transition:all 0.3s;text-align:center;min-width:0;}
 .device-btn:hover{border-color:rgba(127,180,255,0.4);}
 .device-btn.sel{border-color:var(--blue);background:rgba(62,123,250,0.1);}
 .device-btn-num{font-family:'Poppins','Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:18px;font-weight:800;color:#fff;}
@@ -243,7 +243,7 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
           </ul>
           <p style="margin-top:10px;"><svg class="icon" viewBox="0 0 24 24" style="color:var(--blue-2);" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> ফ্রী পেতে এই লিংকে যান: <a href="https://aviso.bz/wall?uid=3371162" target="_blank" style="color:var(--blue-2);">aviso.bz/wall?uid=3371162</a> অথবা আমার রেফার এ একাউন্ট খুলুন: <a href="https://aviso.bz/?r=anix" target="_blank" style="color:var(--blue-2);">aviso.bz/?r=anix</a></p>
           <p><svg class="icon" viewBox="0 0 24 24" style="color:var(--blue-2);" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> তারপর <b style="color:#fff;">"Become a Referral"</b> এ ক্লিক করুন এবং ফ্রি পান!</p>
-          <p>Form এ আপনার Aviso username বা nickname দিন, আমি চেক করে দেখে Automation App পাঠিয়ে দিবো।</p>
+          <p>Form এ আপনার Aviso username বা nickname দিন, আমি চেক করে দেখে Aviso Bot পাঠিয়ে দিবো।</p>
         </div>
       </div>
 
@@ -256,36 +256,36 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
         <div class="plan-cta">সিলেক্ট করুন</div>
       </div>
 
-      <div class="plan" onclick="selectPlan(this)" data-name="১ মাস – Automation App" data-price="55" data-label="30 DAYS ACCESS">
+      <div class="plan" onclick="selectPlan(this)" data-name="১ মাস – Aviso Bot" data-price="35" data-label="30 DAYS ACCESS">
         <div class="plan-left"><div class="plan-check"></div><div class="plan-info">
           <div class="plan-duration">১ মাস</div><div class="plan-sub">30 DAYS ACCESS</div>
         </div></div>
-        <div class="plan-right"><div class="old-price">১৫০ টাকা</div><div class="new-price" style="color:var(--blue-2);">৫৫ <span class="currency">৳</span></div></div>
+        <div class="plan-right"><div class="old-price">১৫০ টাকা</div><div class="new-price" style="color:var(--blue-2);">৩৫ <span class="currency">৳</span></div></div>
         <div class="plan-cta">সিলেক্ট করুন</div>
       </div>
 
-      <div class="plan popular" onclick="selectPlan(this)" data-name="৩ মাস – Automation App" data-price="130" data-label="90 DAYS ACCESS">
+      <div class="plan popular" onclick="selectPlan(this)" data-name="৩ মাস – Aviso Bot" data-price="95" data-label="90 DAYS ACCESS">
         <div class="plan-left"><div class="plan-check"></div><div class="plan-info">
           <div class="plan-duration">৩ মাস</div><div class="plan-sub">90 DAYS ACCESS</div>
         </div></div>
-        <div class="plan-right"><div class="old-price">৩৫০ টাকা</div><div class="new-price" style="color:var(--blue-2);">১৩০ <span class="currency">৳</span></div></div>
+        <div class="plan-right"><div class="old-price">৩৫০ টাকা</div><div class="new-price" style="color:var(--blue-2);">৯৫ <span class="currency">৳</span></div></div>
         <div class="plan-cta">সিলেক্ট করুন</div>
       </div>
 
-      <div class="plan" onclick="selectPlan(this)" data-name="১ বছর – Automation App" data-price="399" data-label="365 DAYS ACCESS">
+      <div class="plan" onclick="selectPlan(this)" data-name="১ বছর – Aviso Bot" data-price="295" data-label="365 DAYS ACCESS">
         <div class="plan-left"><div class="plan-check"></div><div class="plan-info">
           <div class="plan-duration">১ বছর</div><div class="plan-sub">365 DAYS ACCESS</div>
         </div></div>
-        <div class="plan-right"><div class="old-price">৮০০ টাকা</div><div class="new-price" style="color:var(--blue-2);">৩৯৯ <span class="currency">৳</span></div></div>
+        <div class="plan-right"><div class="old-price">৮০০ টাকা</div><div class="new-price" style="color:var(--blue-2);">২৯৫ <span class="currency">৳</span></div></div>
         <div class="plan-cta">সিলেক্ট করুন</div>
       </div>
 
-      <div class="plan free-plan" onclick="selectPlan(this)" data-name="১ বছর – Automation App (FREE)" data-price="0" data-label="365 DAYS · CONDITION APPLY" data-type="free">
+      <div class="plan free-plan" onclick="selectPlan(this)" data-name="১ বছর – Aviso Bot (FREE)" data-price="0" data-label="365 DAYS · CONDITION APPLY" data-type="free">
         <div class="plan-left"><div class="plan-check"></div><div class="plan-info">
           <div class="plan-duration">১ বছর <span style="color:var(--gold);font-size:13px;">– বিনামূল্যে</span></div>
           <div class="plan-sub">REFERRAL CONDITION APPLY</div>
         </div></div>
-        <div class="plan-right"><div class="old-price">৩৯৯ টাকা</div><div class="new-price" style="color:var(--gold);">FREE</div></div>
+        <div class="plan-right"><div class="old-price">২৯৫ টাকা</div><div class="new-price" style="color:var(--gold);">FREE</div></div>
         <div class="plan-cta">সিলেক্ট করুন</div>
       </div>
 
@@ -300,21 +300,21 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
       <div class="device-btn sel" onclick="selectDevice(this,1,0)">
         <div class="device-btn-num">১</div><div class="device-btn-lbl">DEVICE</div>
       </div>
-      <div class="device-btn" onclick="selectDevice(this,2,15)">
+      <div class="device-btn" onclick="selectDevice(this,2,5)">
         <div class="device-btn-num">২</div><div class="device-btn-lbl">DEVICE</div>
-        <div class="disc-badge">-15%</div>
+        <div class="disc-badge">-৫%</div>
       </div>
-      <div class="device-btn" onclick="selectDevice(this,3,25)">
+      <div class="device-btn" onclick="selectDevice(this,3,15)">
         <div class="device-btn-num">৩</div><div class="device-btn-lbl">DEVICE</div>
-        <div class="disc-badge">-25%</div>
+        <div class="disc-badge">-১৫%</div>
       </div>
-      <div class="device-btn" onclick="selectDevice(this,5,35)">
+      <div class="device-btn" onclick="selectDevice(this,5,25)">
         <div class="device-btn-num">৫</div><div class="device-btn-lbl">DEVICE</div>
-        <div class="disc-badge">-35%</div>
+        <div class="disc-badge">-২৫%</div>
       </div>
-      <div class="device-btn" onclick="selectDevice(this,10,50)">
+      <div class="device-btn" onclick="selectDevice(this,10,35)">
         <div class="device-btn-num">১০</div><div class="device-btn-lbl">DEVICE</div>
-        <div class="disc-badge">-50%</div>
+        <div class="disc-badge">-৩৫%</div>
       </div>
     </div>
     <div class="disc-info" id="discInfo">
@@ -335,7 +335,7 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
           <div class="selected-pkg-sub" id="selDevLabel"></div>
         </div>
         <div style="text-align:right;">
-          <div id="selOldPrice" style="font-family:'Share Tech Mono','Hind Siliguri','Noto Sans Bengali',monospace;font-size:12px;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px;display:none;"></div>
+          <div id="selOldPrice" style="font-family:'Share Tech Mono','Hind Siliguri','Noto Sans Bengali',monospace;font-size:12px;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:1px;display:none;"></div>
           <div class="selected-pkg-price" id="selPrice">-</div>
         </div>
       </div>
@@ -360,16 +360,6 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
         <div style="margin-top:10px;padding:8px 10px;background:rgba(230,57,70,0.1);border:1px solid rgba(230,57,70,0.3);border-radius:10px;color:#ccc;">
           <svg class="icon icon-dot" viewBox="0 0 24 24" style="color:var(--red);" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg> <b style="color:#fff;">সতর্কতা:</b> টানা <b style="color:var(--red);">৩ দিন</b> Aviso সাইটে অ্যাক্টিভ না থাকলে লাইসেন্স কী <b style="color:var(--red);">ব্লক</b> করে দেওয়া হবে এবং ভবিষ্যতে আর ফ্রি বট দেওয়া হবে না। এই অফার নিতে হলে শর্ত অনুযায়ী ১ বছর Aviso-তে কাজ করতে হবে।
         </div>
-      </div>
-
-      <div class="payment-box" id="payBox">
-        <div class="payment-title"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> পেমেন্ট করুন</div>
-        <div class="payment-row">
-          <span class="payment-label">bKash / Nagad</span>
-          <span class="payment-number" id="payNum">01618042229</span>
-          <button class="copy-btn" onclick="copyText('payNum')">COPY</button>
-        </div>
-        <div class="payment-amount">সেন্ড মানি: <span id="payAmt">-</span> টাকা</div>
       </div>
 
       <form id="orderForm">
@@ -406,14 +396,6 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
 
         <div id="payFields">
           <div class="field">
-            <label>যে নম্বর থেকে টাকা পাঠিয়েছেন *</label>
-            <input type="text" name="sender_number" id="senderInput" placeholder="01XXXXXXXXX" pattern="01[0-9]{9}" title="সঠিক ১১ ডিজিটের নম্বর দিন">
-          </div>
-          <div class="field">
-            <label>Transaction ID *</label>
-            <input type="text" name="transaction_id" id="txnInput" placeholder="bKash/Nagad Transaction ID" minlength="6" style="font-family:'Share Tech Mono',monospace;letter-spacing:1px;">
-          </div>
-          <div class="field">
             <label>পেমেন্ট মাধ্যম *</label>
             <div style="display:flex;gap:10px;margin-top:10px;">
               <label style="flex:1;cursor:pointer;">
@@ -431,6 +413,24 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
                 </div>
               </label>
             </div>
+          </div>
+      <div class="payment-box" id="payBox" style="display:none;">
+        <div class="payment-title"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> পেমেন্ট করুন</div>
+        <div class="payment-row">
+          <span class="payment-label" id="payLabel">bKash / Nagad</span>
+          <span class="payment-number" id="payNum">01618042229</span>
+          <button type="button" class="copy-btn" onclick="copyText('payNum')">COPY</button>
+        </div>
+        <div class="payment-amount">সেন্ড মানি: <span id="payAmt">-</span> টাকা</div>
+      </div>
+
+          <div class="field">
+            <label>যে নম্বর থেকে টাকা পাঠিয়েছেন *</label>
+            <input type="text" name="sender_number" id="senderInput" placeholder="01XXXXXXXXX" pattern="01[0-9]{9}" title="সঠিক ১১ ডিজিটের নম্বর দিন">
+          </div>
+          <div class="field">
+            <label>Transaction ID *</label>
+            <input type="text" name="transaction_id" id="txnInput" placeholder="bKash/Nagad Transaction ID" minlength="6" style="font-family:'Share Tech Mono',monospace;letter-spacing:1px;">
           </div>
         </div>
 
@@ -484,6 +484,7 @@ var curDiscount = 0;
 var isFree = false;
 var isFreeTrial = false;
 var isReferral = false;
+function bn(x){return String(x).replace(/\d/g,function(d){return '০১২৩৪৫৬৭৮৯'[d];});}
 
 function selectPlan(el) {
   var container = document.getElementById('macroPlans');
@@ -534,7 +535,7 @@ function selectDevice(el, count, discPct) {
   var info = document.getElementById('discInfo');
   if (discPct > 0) {
     info.classList.add('show');
-    document.getElementById('discText').textContent = '✓ ' + count + 'টি Key একসাথে নিলে ' + discPct + '% ডিসকাউন্ট পাবেন!';
+    document.getElementById('discText').textContent = '✓ ' + bn(count) + 'টি Key একসাথে নিলে ' + bn(discPct) + '% ডিসকাউন্ট পাবেন!';
   } else {
     info.classList.remove('show');
   }
@@ -555,12 +556,12 @@ function refreshOrder() {
     total = Math.round(base * curDevices * (1 - curDiscount / 100));
   }
 
-  document.getElementById('hBotType').value = 'Automation App';
+  document.getElementById('hBotType').value = 'Aviso Bot';
   document.getElementById('hPackage').value = curPlan.name;
   document.getElementById('hAmount').value = (isFree || isFreeTrial) ? 'FREE' : total + ' টাকা';
 
   document.getElementById('selName').textContent = curPlan.name;
-  var devLbl = curDevices > 1 ? curDevices + 'টি Device Key' + (curDiscount > 0 ? ' · ' + curDiscount + '% ছাড়' : '') : '';
+  var devLbl = curDevices > 1 ? bn(curDevices) + 'টি Device Key' + (curDiscount > 0 ? ' · ' + bn(curDiscount) + '% ছাড়' : '') : '';
   document.getElementById('selDevLabel').textContent = devLbl;
 
   // Show extra verify fields for referral/free/freeTrial
@@ -578,16 +579,16 @@ function refreshOrder() {
     var withoutDisc = !isFree && curDevices > 1 && curDiscount > 0 ? Math.round(base * curDevices) : 0;
     var oldPriceEl = document.getElementById('selOldPrice');
     if (withoutDisc > 0) {
-      oldPriceEl.textContent = withoutDisc + ' ৳';
+      oldPriceEl.textContent = bn(withoutDisc) + ' ৳';
       oldPriceEl.style.display = 'block';
     } else {
       oldPriceEl.style.display = 'none';
     }
-    document.getElementById('selPrice').textContent = total + ' ৳';
+    document.getElementById('selPrice').textContent = bn(total) + ' ৳';
     document.getElementById('selPrice').style.color = '';
-    document.getElementById('payBox').style.display = 'block';
+    document.getElementById('payBox').style.display = document.querySelector('[name="payment_method"]:checked') ? 'block' : 'none';
     document.getElementById('payFields').style.display = 'block';
-    document.getElementById('payAmt').textContent = total;
+    document.getElementById('payAmt').textContent = bn(total);
     document.getElementById('noteFree').classList.remove('show');
     document.getElementById('noteFreeTrial').classList.remove('show');
     document.getElementById('noteReferral').className = 'note-box note-blue' + (isReferral ? ' show' : '');
@@ -600,6 +601,8 @@ function selectPay(el) {
     document.getElementById(id).style.background = 'rgba(255,255,255,0.03)';
   });
   var id = el.value === 'bKash' ? 'btn_bkash' : 'btn_nagad';
+  document.getElementById('payLabel').textContent = el.value;
+  document.getElementById('payBox').style.display = 'block';
   document.getElementById(id).style.borderColor = 'var(--blue)';
   document.getElementById(id).style.background = 'rgba(62,123,250,0.08)';
 }
