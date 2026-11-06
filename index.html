@@ -161,7 +161,12 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
 .field input,.field textarea{width:100%;background:rgba(255,255,255,0.045);border:1px solid var(--border);border-radius:12px;padding:11px 14px;color:#fff;font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:14px;outline:none;transition:border-color 0.3s;}
 .field input:focus,.field textarea:focus{border-color:var(--blue);}
 .field textarea{resize:none;height:80px;}
+.field-hint{font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:12px;line-height:1.7;color:var(--muted);margin-top:6px;}
+.field-hint b{color:var(--blue-2);font-weight:600;}
 .pay-method-btn{background:rgba(255,255,255,0.03);border:2px solid var(--border);border-radius:14px;padding:12px;text-align:center;transition:all 0.3s;}
+.dlv-btn{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;}
+.dlv-name{font-size:15px;font-weight:700;color:#fff;}
+.dlv-sub{font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:11.5px;color:var(--muted);margin-top:3px;white-space:nowrap;}
 .submit-btn{width:100%;background:#fff;border:none;border-radius:999px;padding:15px;color:#000;font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all 0.3s;margin-top:8px;}
 .submit-btn:hover{background:var(--blue-2);box-shadow:0 8px 28px rgba(62,123,250,0.35);}
 .submit-btn:disabled{background:#2a2a30;color:#6a6a75;cursor:not-allowed;box-shadow:none;}
@@ -386,12 +391,33 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
         </div>
 
         <div class="field">
+          <label>Bot কোন মাধ্যমে নিতে চান? *</label>
+          <div style="display:flex;gap:10px;align-items:stretch;">
+            <label style="flex:1;cursor:pointer;display:flex;">
+              <input type="radio" name="delivery_method" value="Gmail" style="display:none;" checked onchange="selectDelivery(this)">
+              <div class="pay-method-btn dlv-btn" id="dlv_gmail" style="border-color:var(--blue);background:rgba(62,123,250,0.08);">
+                <div class="dlv-name">Gmail</div>
+                <div class="dlv-sub">ইমেইলে পাবেন</div>
+              </div>
+            </label>
+            <label style="flex:1;cursor:pointer;display:flex;">
+              <input type="radio" name="delivery_method" value="WhatsApp" style="display:none;" onchange="selectDelivery(this)">
+              <div class="pay-method-btn dlv-btn" id="dlv_wa">
+                <div class="dlv-name">WhatsApp</div>
+                <div class="dlv-sub">WhatsApp-এ পাবেন</div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="field" id="emailField">
           <label>Gmail Address *</label>
           <input type="email" name="email" placeholder="example@gmail.com" required>
+          <div class="field-hint">এই Gmail-এই আপনার <b>Bot ফাইল পাঠানো হবে</b>। সঠিক Gmail দিন। ইমেইল না পেলে <b>spam box</b> চেক করুন।</div>
         </div>
-        <div class="field">
-          <label>WhatsApp Number</label>
+        <div class="field" id="waField" style="display:none;">
+          <label>WhatsApp Number *</label>
           <input type="text" name="whatsapp" placeholder="01XXXXXXXXX">
+          <div class="field-hint">এই নম্বরের <b>WhatsApp-এ Bot ফাইল পাঠানো হবে</b>। নম্বরটিতে WhatsApp চালু আছে কিনা নিশ্চিত করুন।</div>
         </div>
 
         <div id="payFields">
@@ -468,7 +494,7 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani','Hind Siligur
     <style>@keyframes popIn{0%{transform:scale(0.7);opacity:0;}100%{transform:scale(1);opacity:1;}}</style>
     <img src="https://s13.gifyu.com/images/bv0Yl.gif" style="width:110px;height:110px;margin-bottom:16px;">
     <div style="color:#7FB4FF;font-size:24px;font-family:'Rajdhani','Hind Siliguri','Noto Sans Bengali',sans-serif;font-weight:700;letter-spacing:1px;margin-bottom:14px;">অর্ডার সম্পন্ন!</div>
-    <p style="font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:13px;color:#aaa;line-height:2;text-align:left;">
+    <p id="popMsg" style="font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:13px;color:#aaa;line-height:2;text-align:left;">
       আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে। যাচাই প্রক্রিয়া সম্পন্ন হওয়ার পর আপনার Gmail-এ Bot ফাইলটি পাঠিয়ে দেওয়া হবে। সাধারণত ১–৩ ঘণ্টার মধ্যে ডেলিভারি সম্পন্ন হয়।<br><br>
       <b style="color:#fff;">LimeWire</b> থেকে ইমেইল আসবে, না পেলে <b style="color:#fff;">spam box</b> চেক করুন। ইমেইলে লেখা থাকবে: <b style="color:#f4a03a;">"📬 You've got files!"</b> — সেখান থেকে <b style="color:#7FB4FF;">Avisobot.zip</b> ডাউনলোড করুন।
     </p>
@@ -595,6 +621,19 @@ function refreshOrder() {
   }
 }
 
+function selectDelivery(el) {
+  var wa = el.value === 'WhatsApp';
+  var on = {borderColor:'var(--blue)',background:'rgba(62,123,250,0.08)'};
+  var off = {borderColor:'var(--border)',background:'rgba(255,255,255,0.03)'};
+  Object.assign(document.getElementById('dlv_gmail').style, wa ? off : on);
+  Object.assign(document.getElementById('dlv_wa').style, wa ? on : off);
+  document.getElementById('emailField').style.display = wa ? 'none' : 'block';
+  document.getElementById('waField').style.display = wa ? 'block' : 'none';
+  var f = document.getElementById('orderForm');
+  if (wa) f.querySelector('[name="email"]').value = '';
+  else f.querySelector('[name="whatsapp"]').value = '';
+}
+
 function selectPay(el) {
   ['btn_bkash','btn_nagad'].forEach(id => {
     document.getElementById(id).style.borderColor = 'var(--border)';
@@ -624,7 +663,14 @@ function doSubmit() {
 
   var form = document.getElementById('orderForm');
   var email = form.querySelector('[name="email"]').value.trim();
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('⚠ সঠিক Gmail address দিন'); return; }
+  var wa = form.querySelector('[name="whatsapp"]').value.trim();
+  var dm = form.querySelector('[name="delivery_method"]:checked');
+  var viaWa = !!dm && dm.value === 'WhatsApp';
+  if (viaWa) {
+    if (!wa || !/^\+?[0-9\s-]{10,16}$/.test(wa)) { alert('⚠ সঠিক WhatsApp নম্বর দিন'); return; }
+  } else {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('⚠ সঠিক Gmail address দিন'); return; }
+  }
 
   if (isFree || isFreeTrial || isReferral) {
     var name = form.querySelector('[name="name"]').value.trim();
@@ -655,6 +701,7 @@ function doSubmit() {
   }).then(r => {
     if (r.ok) {
       form.style.display = 'none';
+      if (viaWa) document.getElementById('popMsg').innerHTML = 'আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে। যাচাই প্রক্রিয়া সম্পন্ন হওয়ার পর আপনার <b style="color:#fff;">WhatsApp</b> নম্বরে Bot ফাইলটি পাঠিয়ে দেওয়া হবে। সাধারণত ১–৩ ঘণ্টার মধ্যে ডেলিভারি সম্পন্ন হয়।<br><br>নম্বরটিতে WhatsApp চালু আছে কিনা নিশ্চিত করুন।';
       document.getElementById('successPopup').style.display = 'flex';
     } else {
       btn.disabled = false;
